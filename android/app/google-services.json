@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "815383168621",
+    "project_id": "aurabeast-d5db0",
+    "storage_bucket": "aurabeast-d5db0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815383168621:android:26c20f458492bb8b9a6164",
+        "android_client_info": {
+          "package_name": "com.example.aurabeast"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "815383168621-t1r03dgo2tnhavps26f3jlqh7qo8icnk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.aurabeast",
+            "certificate_hash": "b7f90f00511e4b8c4f275715a63cc4e5e5c9e4da"
+          }
+        },
+        {
+          "client_id": "815383168621-pic1cbn4bvtl1qogcs2ntidcdq20oqao.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOm8UtpRwBycjPOXkj6W-eJFfSwGct6-Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "815383168621-pic1cbn4bvtl1qogcs2ntidcdq20oqao.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "815383168621-v1ce4sdmjoo5f3jaqhsdi3fbnbsnko13.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.aurabeast"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

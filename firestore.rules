@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function owner(resource) { return signedIn() && resource.data.ownerId == request.auth.uid; }
+    function newOwner() { return signedIn() && request.resource.data.ownerId == request.auth.uid; }
+
+    match /users/{userId} {
+      allow read: if signedIn() && request.auth.uid == userId;
+      allow create: if signedIn() && request.auth.uid == userId;
+      allow update: if signedIn() && request.auth.uid == userId && request.resource.data.email == resource.data.email;
+      allow delete: if signedIn() && request.auth.uid == userId;
+    }
+    match /songs/{songId} { allow read: if true; allow write: if owner(resource) || newOwner(); }
+    match /artists/{artistId} { allow read: if true; allow write: if false; }
+    match /albums/{albumId} { allow read: if true; allow write: if false; }
+    match /playlists/{playlistId} {
+      allow read: if resource.data.isPublic == true || owner(resource);
+      allow create: if newOwner();
+      allow update, delete: if owner(resource) && request.resource.data.ownerId == resource.data.ownerId;
+    }
+    match /playlistSongs/{entryId} {
+      allow read: if signedIn() && (get(/databases/$(database)/documents/playlists/$(resource.data.playlistId)).data.isPublic == true || get(/databases/$(database)/documents/playlists/$(resource.data.playlistId)).data.ownerId == request.auth.uid);
+      allow create, update, delete: if signedIn() && get(/databases/$(database)/documents/playlists/$(request.resource.data.playlistId)).data.ownerId == request.auth.uid;
+    }
+    match /likedSongs/{entryId} { allow read, update, delete: if signedIn() && request.auth.uid == resource.data.userId; allow create: if signedIn() && request.auth.uid == request.resource.data.userId; }
+    match /likedAlbums/{entryId} { allow read, update, delete: if signedIn() && request.auth.uid == resource.data.userId; allow create: if signedIn() && request.auth.uid == request.resource.data.userId; }
+    match /likedPlaylists/{entryId} { allow read, update, delete: if signedIn() && request.auth.uid == resource.data.userId; allow create: if signedIn() && request.auth.uid == request.resource.data.userId; }
+    match /recentlyPlayed/{entryId} { allow read, update, delete: if signedIn() && request.auth.uid == resource.data.userId; allow create: if signedIn() && request.auth.uid == request.resource.data.userId; }
+    match /follows/{entryId} { allow read, update, delete: if signedIn() && request.auth.uid == resource.data.userId; allow create: if signedIn() && request.auth.uid == request.resource.data.userId; }
+    match /notifications/{entryId} { allow read, update, delete: if signedIn() && request.auth.uid == resource.data.userId; allow create: if signedIn() && request.auth.uid == request.resource.data.userId; }
+    match /userPreferences/{userId} { allow read, write: if signedIn() && request.auth.uid == userId; }
+    match /analyticsEvents/{eventId} {
+      allow create: if signedIn() && request.auth.uid == request.resource.data.userId;
+      allow read, update, delete: if false;
+    }
+  }
+}
